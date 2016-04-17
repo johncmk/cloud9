@@ -138,7 +138,7 @@ if __name__ == "__main__":
                      Tree(7,None,
                           Tree(9)
                           )))
-
+    
     insert(t,11)
     insert(t,0)
     insert(t,8)
