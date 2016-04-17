@@ -109,6 +109,23 @@ def delete(t,x):
     else:
         _delete(parent,None,rt)
     
+'''Shortest path, longest path, max sum, max depth, find mirror image of tree'''
+
+
+def maxDept(t,x = []):
+    if t is None:
+        return 0
+    l = t.left
+    rt = t.root
+    r = t.right
+    x.append(rt)
+    left = maxDept(l,x)
+    right = maxDept(r,x)
+    
+    max_dpt = max(x[0], left, right)
+    return max_dpt
+    
+
 
 if __name__ == "__main__":
 
