@@ -14,12 +14,18 @@ and print the path DFS traverse visited'''
 
 def foo(t,li = [],lv = 0):
     if t is None:
-        #lv = 0
         return
     
-    print lv, " : ",t.root
+    if t.left is None and t.right is None:
+        li.append(t.root)
+        print "path : ",li
+        li.pop()
+        return
+    
+    li.append(t.root)
     foo(t.left,li,lv+1)
     foo(t.right,li,lv+1)
+    li.pop()
     
 def print_t(t,tab=1):
     if t is None:
