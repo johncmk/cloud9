@@ -72,6 +72,10 @@ def lca(t, n1, n2):
         print "lca not found"
         return []
         
+    print "longest path"
+    print "n1_path : ",n1_path
+    print "n2_path : ",n2_path
+    
     length = max(n1_path , n2_path)
     i = 0
     while i < length:
@@ -83,7 +87,7 @@ def lca(t, n1, n2):
     
 '''level of nodes'''
 
-def get_level(t,lv=0,d={}):
+def get_level(t,d,lv = 0):
     if t is None:
         return
     
@@ -91,12 +95,40 @@ def get_level(t,lv=0,d={}):
     rt = t.root
     r = t.right
     
-    d[rt] = lv
-    get_level(l,lv+1,d)
-    get_level(r,lv+1,d)
+    d[lv] = rt
+    get_level(l,d,lv+1)
+    get_level(r,d,lv+1)
     return d
-    
 
+import sys    
+    
+def getMax_level(t, d = {}):
+    if t is None:
+        return -1
+        
+    l = t.left
+    rt = t.root
+    r = t.right
+    
+    l_d = {}
+    r_d = {}
+    
+    l_d = get_level(l,l_d)
+    r_d = get_level(r,r_d)
+    
+    print "dictioanry left : ", l_d
+    print "dictioanry right : ", r_d
+    l_max_key = max(l_d)
+    l_node = l_d[l_max_key]
+    
+    r_max_key = max(r_d)
+    r_node = r_d[r_max_key]
+    
+    print "longest path from left ", r_node
+    print "longest path from right ", r_node
+    lca(t,l_node,r_node)
+    
+    
 
 if __name__ == "__main__":
     
@@ -114,5 +146,8 @@ if __name__ == "__main__":
     print_t(t)
     paths_bt(t)
     
-    print "lca : ",lca(t,5,8)
-    print "level of tree : ", get_level(t)
+    #print "lca : ",lca(t,5,8)
+    #print "level of tree : ", get_level(t)
+    
+    getMax_level(t)
+    
