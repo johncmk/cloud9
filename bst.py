@@ -30,6 +30,16 @@ def _sorted(t,li):
     _sorted(r,li)
     return li
 
+def post_order(t):
+    if t is None:
+        return t
+    l = t.left
+    rt = t.root
+    r = t.right
+    post_order(l)
+    post_order(r)
+    print rt
+
 def _search(t,x,parent=None):
     if t is None:
         return parent
@@ -108,24 +118,6 @@ def delete(t,x):
         _delete(parent,l,rt)
     else:
         _delete(parent,None,rt)
-    
-'''Shortest path, longest path, max sum, max depth, find mirror image of tree'''
-
-
-def maxDept(t,x = []):
-    if t is None:
-        return 0
-    l = t.left
-    rt = t.root
-    r = t.right
-    x.append(rt)
-    left = maxDept(l,x)
-    right = maxDept(r,x)
-    
-    max_dpt = max(x[0], left, right)
-    return max_dpt
-    
-
 
 if __name__ == "__main__":
 
@@ -135,7 +127,8 @@ if __name__ == "__main__":
                      Tree(3)),
                 Tree(6,
                      Tree(5),
-                     Tree(7,None,
+                     Tree(7,
+                          None,
                           Tree(9)
                           )))
     
@@ -187,3 +180,5 @@ if __name__ == "__main__":
     delete(t,6)
     print_t(t)
     print _sorted(t,[])
+    
+    post_order(t)
