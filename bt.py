@@ -12,7 +12,7 @@ class Tree:
 we can do DFS traversal from root until we find a leaf node
 and print the path DFS traverse visited'''
 
-def foo(t,li = [],lv = 0):
+def paths_bt(t,li = []):
     if t is None:
         return
     
@@ -23,8 +23,8 @@ def foo(t,li = [],lv = 0):
         return
     
     li.append(t.root)
-    foo(t.left,li,lv+1)
-    foo(t.right,li,lv+1)
+    paths_bt(t.left,li)
+    paths_bt(t.right,li)
     li.pop()
     
 def print_t(t,tab=1):
@@ -48,4 +48,4 @@ if __name__ == "__main__":
                         
     
     print_t(t)
-    foo(t)
+    paths_bt(t)
