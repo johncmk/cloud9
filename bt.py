@@ -58,12 +58,9 @@ def _lca(t,x,path):
     path.pop()
     return False
 
-def lca(t, n1, n2):
+def find_lca(t, n1, n2,n1_path=[],n2_path=[]):
     if t is None:
         return []
-    
-    n1_path = []
-    n2_path = []
     
     n1_flag = _lca(t,n1,n1_path)
     n2_flag = _lca(t,n2,n2_path)
@@ -71,11 +68,7 @@ def lca(t, n1, n2):
     if n1_flag == False or n2_flag == False:
         print "lca not found"
         return []
-        
-    print "longest path"
-    print "n1_path : ",n1_path
-    print "n2_path : ",n2_path
-    
+ 
     length = max(n1_path , n2_path)
     i = 0
     while i < length:
@@ -100,8 +93,6 @@ def get_level(t,d,lv = 0):
     get_level(r,d,lv+1)
     return d
 
-import sys    
-    
 def getMax_level(t, d = {}):
     if t is None:
         return -1
@@ -116,19 +107,37 @@ def getMax_level(t, d = {}):
     l_d = get_level(l,l_d)
     r_d = get_level(r,r_d)
     
-    print "dictioanry left : ", l_d
-    print "dictioanry right : ", r_d
     l_max_key = max(l_d)
     l_node = l_d[l_max_key]
     
     r_max_key = max(r_d)
     r_node = r_d[r_max_key]
     
-    print "longest path from left ", r_node
-    print "longest path from right ", r_node
-    lca(t,l_node,r_node)
+    lca = find_lca(t,l_node,r_node)
     
+'''shortest path between two nodes'''
+def shortest_path(t,n1,n2):
+    if t is None:
+        return
     
+    n1_path = []
+    n2_path = []
+    
+    lca = find_lca(t,n1,n2,n1_path,n2_path)
+   
+    for el in reversed(n1_path):
+        if el == lca:
+            print lca," ",
+            break;
+        else:
+            print el," ",
+            
+    for el in n2_path:
+        if el == lca:
+            continue
+        else:
+            print el," ",
+
 
 if __name__ == "__main__":
     
@@ -150,4 +159,4 @@ if __name__ == "__main__":
     #print "level of tree : ", get_level(t)
     
     getMax_level(t)
-    
+    shortest_path(t,4,5)
