@@ -178,30 +178,36 @@ def max_depth(t):
     return max(l_lv, r_lv)+1
 
 '''get level of given node of the tree'''
-def get_level(t,x):
+def get_level(t,x,lv = 0):
     if t is None:
-        return 0
+        return 0 #either tree is empty or node was never found
         
     l = t.left
     rt = t.root
     r = t.right
         
     if rt == x:
-        return 1
+        print "========"
+        print "found root == x : ",rt
+        print "found root level : ",lv
+        print "========"
+        return lv
     
-    l_lv = get_level(l,x)
-    r_lv = get_level(r,x)
-    
-    if l_lv != 0:
-        l_lv+=1
-        return l_lv
-        
-    if r_lv != 0:
-        r_lv+=1
+    l_lv = get_level(l,x,lv+1)
+    r_lv = 0
+    if l_lv == 0:
+        r_lv = get_level(r,x,lv+1)
         return r_lv
-        
-    return 0
-
+    else:
+        return l_lv
+    
+    '''
+    print "========"
+    print "rt : ",rt
+    print "lv : ",l_lv
+    print "========"
+    '''
+     
 
 '''Find the distance between two nodes
 ex: 5->8 is 3
@@ -234,9 +240,9 @@ if __name__ == "__main__":
     
     print "max depth : ",max_depth(t) #print longest path from root to leaf
     
-    
     getMax_level(t)
     shortest_path(t,4,5)
     
-    x = 7
+    print ""
+    x = 6
     print "get level ",x,"  : ",get_level(t,x)
