@@ -232,8 +232,29 @@ def largest_sum(t):
     
     all_v = l_v + r_v #path1
     return max(l_v,r_v,all_v)
+ 
+'''Breath First Traverse'''   
+def bfs(t):
+    if t is None:
+        return
     
-
+    q = []
+    q.insert(0,t)
+    
+    while q != []:
+        t = q.pop(0)
+        
+        l = t.left
+        rt = t.root
+        r = t.right
+        
+        print rt
+        
+        if l is not None:
+            q.append(l)
+        if r is not None:
+            q.append(r)
+            
 if __name__ == "__main__":
     
     t = Tree(1,
@@ -246,7 +267,9 @@ if __name__ == "__main__":
                     Tree(6
                         ,Tree(8))))
                         
-    
+    print "========BFS=========="
+    bfs(t)
+    print "====================="
     print_t(t)
     paths_bt(t) #print all path 
     

@@ -109,7 +109,7 @@ def delete(t,x):
     r = t.right
 
     if l is not None and r is not None:
-        key = min(_sorted(r,[]))
+        key = min(_sorted(r,[])) #Return SUCCESSOR
         delete(t,key)
         t.root = key
     elif r is not None:
