@@ -187,10 +187,6 @@ def get_level(t,x,lv = 0):
     r = t.right
         
     if rt == x:
-        print "========"
-        print "found root == x : ",rt
-        print "found root level : ",lv
-        print "========"
         return lv
     
     l_lv = get_level(l,x,lv+1)
@@ -200,14 +196,6 @@ def get_level(t,x,lv = 0):
         return r_lv
     else:
         return l_lv
-    
-    '''
-    print "========"
-    print "rt : ",rt
-    print "lv : ",l_lv
-    print "========"
-    '''
-     
 
 '''Find the distance between two nodes
 ex: 5->8 is 3
@@ -216,10 +204,10 @@ then find the distance'''
 
 def dist(t,n1,n2):
     if t is None:
-        return t
+        return 0
     
     lca = find_lca2(t,n1,n2)
-    
+    return get_level(t,n1) + get_level(t,n2) - 2* get_level(t,lca)
     
 
 if __name__ == "__main__":
@@ -244,5 +232,7 @@ if __name__ == "__main__":
     shortest_path(t,4,5)
     
     print ""
-    x = 6
+    x = 3
     print "get level ",x,"  : ",get_level(t,x)
+    
+    print "diameater from 5 to 8 : ", dist(t,5,8)
