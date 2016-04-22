@@ -21,8 +21,12 @@ def paths_bt(t,li = []):
     if t is None:
         return
     
-    if t.left is None and t.right is None:
-        li.append(t.root)
+    l = t.left
+    rt = t.root
+    r = t.right
+    
+    if l is None and r is None:
+        li.append(rt)
         print "path : ",li
         li.pop()
         return
@@ -49,6 +53,7 @@ def _lca(t,x,path):
         return True
     if _lca(l,x,path) or _lca(r,x,path):
         return True
+        
     path.pop()
     return False
 
@@ -208,30 +213,24 @@ def dist(t,n1,n2):
     
     '''left + right - 2 * lca can be equalvalent to
     (left-lca) + (right-lca). it's alternative.'''
-    
-    print "left : ",left
-    print "right : ",right
-    print "lca : ", lca_dist
     return left + right - lca_dist 
     
 '''Largest Sum Path'''    
-def largest_sum(t,l_v = 0, r_v = 0):
+def largest_sum(t):
     if t is None:
-        return l_v + r_v
+        return 0
     
     if t.left is None and t.right is None:
         return t.root
         
-    l_v = largest_sum(t.left, l_v + t.root,0) #path2
-    r_v = largest_sum(t.right, 0, r_v + t.root) #path3
-    
-    
+    l = t.left
+    rt = t.root
+    r = t.right
+        
+    l_v = largest_sum(l) + rt #path2
+    r_v = largest_sum(r) + rt #path3
     
     all_v = l_v + r_v #path1
-    print "left : ", l_v
-    print "right : ", r_v
-    print "all path : ", all_v
-    
     return max(l_v,r_v,all_v)
     
 
