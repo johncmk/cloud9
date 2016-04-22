@@ -17,7 +17,6 @@ def print_t(t,tab=1):
 '''preorder AKA DFS 
 we can do DFS traversal from root until we find a leaf node
 and print the path DFS traverse visited'''
-
 def paths_bt(t,li = []):
     if t is None:
         return
@@ -36,7 +35,6 @@ def paths_bt(t,li = []):
 '''longest path; require 2 helper function find LCA and find the level of each node'''
 
 '''LCA'''
-
 def _lca(t,x,path):
     if t is None:
         return False
@@ -49,12 +47,8 @@ def _lca(t,x,path):
 
     if rt == x:
         return True
-    if _lca(l,x,path):
+    if _lca(l,x,path) or _lca(r,x,path):
         return True
-        
-    if _lca(r,x,path):
-        return True
-        
     path.pop()
     return False
 
