@@ -207,8 +207,17 @@ def dist(t,n1,n2):
         return 0
     
     lca = find_lca2(t,n1,n2)
-    return get_level(t,n1) + get_level(t,n2) - 2* get_level(t,lca)
     
+    left = get_level(t,n1)
+    right = get_level(t,n2)
+    lca_dist = 2* get_level(t,lca)
+    
+    print "left : ",left
+    print "right : ",right
+    print "lca : ", lca_dist
+    return left + right - lca_dist 
+    
+'''Largest Sum Path'''    
 
 if __name__ == "__main__":
     
