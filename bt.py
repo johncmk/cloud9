@@ -210,7 +210,10 @@ def dist(t,n1,n2):
     
     left = get_level(t,n1)
     right = get_level(t,n2)
-    lca_dist = 2* get_level(t,lca)
+    lca_dist = 2 * get_level(t,lca)
+    
+    '''left + right - 2 * lca can be equalvalent to
+    (left-lca) + (right-lca). it's alternative.'''
     
     print "left : ",left
     print "right : ",right
@@ -218,6 +221,25 @@ def dist(t,n1,n2):
     return left + right - lca_dist 
     
 '''Largest Sum Path'''    
+def largest_sum(t,l_v = 0, r_v = 0):
+    if t is None:
+        return l_v + r_v
+    
+    if t.left is None and t.right is None:
+        return t.root
+        
+    l_v = largest_sum(t.left, l_v + t.root,0) #path2
+    r_v = largest_sum(t.right, 0, r_v + t.root) #path3
+    
+    
+    
+    all_v = l_v + r_v #path1
+    print "left : ", l_v
+    print "right : ", r_v
+    print "all path : ", all_v
+    
+    return max(l_v,r_v,all_v)
+    
 
 if __name__ == "__main__":
     
@@ -245,3 +267,5 @@ if __name__ == "__main__":
     print "get level ",x,"  : ",get_level(t,x)
     
     print "diameater from 5 to 8 : ", dist(t,5,8)
+    
+    print "largest_sum : ",largest_sum(t)
