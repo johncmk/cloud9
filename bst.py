@@ -30,6 +30,7 @@ def _sorted(t,li):
     _sorted(r,li)
     return li
 
+'''POST ORDER'''
 def post_order(t):
     if t is None:
         return t
@@ -39,6 +40,29 @@ def post_order(t):
     post_order(l)
     post_order(r)
     print rt
+
+'''BFS; Breath First Order'''
+def bfs(t):
+    if t is None:
+        return
+    
+    q = []
+    q.append(t)
+    
+    while q != []:
+        sub_t = q.pop(0)
+        print sub_t.root," "
+        
+        l = sub_t.left
+        rt = sub_t.root
+        r = sub_t.right
+        
+        if l is not None:
+            q.append(l)
+            
+        if r is not None:
+            q.append(r)
+
 
 def _search(t,x,parent=None):
     if t is None:
@@ -132,6 +156,11 @@ if __name__ == "__main__":
                           Tree(9)
                           )))
     
+    
+    print_t(t)
+    print "===BFS==="
+    bfs(t)
+    print "========="
     insert(t,11)
     insert(t,0)
     insert(t,8)
