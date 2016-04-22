@@ -58,6 +58,8 @@ def _lca(t,x,path):
     path.pop()
     return False
 
+'''Find lca and the path of left subtree
+and the right subtree.'''
 def find_lca(t, n1, n2,n1_path=[],n2_path=[]):
     if t is None:
         return []
@@ -80,7 +82,7 @@ def find_lca(t, n1, n2,n1_path=[],n2_path=[]):
     
 '''level of nodes'''
 
-def get_level(t,d,lv = 0):
+def get_all_level(t,d,lv = 0):
     if t is None:
         return
     
@@ -89,8 +91,8 @@ def get_level(t,d,lv = 0):
     r = t.right
     
     d[lv] = rt
-    get_level(l,d,lv+1)
-    get_level(r,d,lv+1)
+    get_all_level(l,d,lv+1)
+    get_all_level(r,d,lv+1)
     return d
 
 def getMax_level(t, d = {}):
@@ -104,8 +106,8 @@ def getMax_level(t, d = {}):
     l_d = {}
     r_d = {}
     
-    l_d = get_level(l,l_d)
-    r_d = get_level(r,r_d)
+    l_d = get_all_level(l,l_d)
+    r_d = get_all_level(r,r_d)
     
     l_max_key = max(l_d)
     l_node = l_d[l_max_key]
@@ -138,6 +140,81 @@ def shortest_path(t,n1,n2):
         else:
             print el," ",
 
+'''The diameter of a tree is the number of
+nodes on the longest path 
+between any two leaves in hte tree'''
+def diameter_t(t):
+    return
+
+'''Find the only lca of two nodes'''
+def find_lca2(t,n1,n2):
+    if t is None:
+        return t
+    
+    if t.root == n1 or t.root == n2:
+        return t.root
+    
+    l_root = find_lca2(t.left,n1,n2)
+    r_root = find_lca2(t.right,n1,n2)
+    
+    if l_root is not None and r_root is not None:
+        return t.root
+    
+    if l_root is not None:
+        return l_root
+    else:
+        return r_root
+
+'''longest path aka height of the tree
+the given tree will return 4 because
+>[1->2->4->7] or [1->3->6->8]'''
+def max_depth(t):
+    if t is None:
+        return 0
+        
+    l_lv = max_depth(t.left)
+    r_lv = max_depth(t.right)
+    
+    return max(l_lv, r_lv)+1
+
+'''get level of given node of the tree'''
+def get_level(t,x):
+    if t is None:
+        return 0
+        
+    l = t.left
+    rt = t.root
+    r = t.right
+        
+    if rt == x:
+        return 1
+    
+    l_lv = get_level(l,x)
+    r_lv = get_level(r,x)
+    
+    if l_lv != 0:
+        l_lv+=1
+        return l_lv
+        
+    if r_lv != 0:
+        r_lv+=1
+        return r_lv
+        
+    return 0
+
+
+'''Find the distance between two nodes
+ex: 5->8 is 3
+plan is to get LCA of the two nodes 
+then find the distance'''
+
+def dist(t,n1,n2):
+    if t is None:
+        return t
+    
+    lca = find_lca2(t,n1,n2)
+    
+    
 
 if __name__ == "__main__":
     
@@ -153,10 +230,13 @@ if __name__ == "__main__":
                         
     
     print_t(t)
-    paths_bt(t)
+    paths_bt(t) #print all path 
     
-    #print "lca : ",lca(t,5,8)
-    #print "level of tree : ", get_level(t)
+    print "max depth : ",max_depth(t) #print longest path from root to leaf
+    
     
     getMax_level(t)
     shortest_path(t,4,5)
+    
+    x = 7
+    print "get level ",x,"  : ",get_level(t,x)
