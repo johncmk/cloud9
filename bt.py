@@ -14,28 +14,6 @@ def print_t(t,tab=1):
     print_t(t.left,tab+1)
     print_t(t.right,tab+1)       
 
-'''preorder AKA DFS 
-we can do DFS traversal from root until we find a leaf node
-and print the path DFS traverse visited'''
-def paths_bt(t,li = []):
-    if t is None:
-        return
-    
-    l = t.left
-    rt = t.root
-    r = t.right
-    
-    if l is None and r is None:
-        li.append(rt)
-        print "path : ",li
-        li.pop()
-        return
-    
-    li.append(t.root)
-    paths_bt(t.left,li)
-    paths_bt(t.right,li)
-    li.pop()
-        
 '''longest path; require 2 helper function find LCA and find the level of each node'''
 
 '''LCA'''
@@ -139,80 +117,88 @@ def shortest_path(t,n1,n2):
         else:
             print el," ",
 
-'''The diameter of a tree is the number of
-nodes on the longest path 
-between any two leaves in hte tree'''
-def diameter_t(t):
-    return
+'''preorder AKA DFS 
+we can do DFS traversal from root until we find a leaf node
+and print the path DFS traverse visited'''
+def paths_bt(t,li = []):
+    if t is None:
+        return
+    if t.left is None and t.right is None:
+        li.append(t.root)
+        print "path : ",li
+        li.pop()
+        return
+    li.append(t.root)
+    paths_bt(t.left,li)
+    paths_bt(t.right,li)
+    li.pop()
+        
 
 '''Find the only lca of two nodes'''
-def find_lca2(t,n1,n2):
+def get_lca(t,n1,n2):
     if t is None:
-        return t
-    
-    if t.root == n1 or t.root == n2:
+        return t #eventually return None
+    if t.root == n2:
         return t.root
-    
-    l_root = find_lca2(t.left,n1,n2)
-    r_root = find_lca2(t.right,n1,n2)
-    
+    if t.root == n1:
+        return t.root
+    l_root = get_lca(t.left,n1,n2)
+    r_root = get_lca(t.right,n1,n2)
     if l_root is not None and r_root is not None:
         return t.root
-    
-    if l_root is not None:
+    elif l_root is not None:
         return l_root
-    else:
+    else: 
         return r_root
 
-'''longest path aka height of the tree
+'''Longest path aka height of the tree
 the given tree will return 4 because
 >[1->2->4->7] or [1->3->6->8]'''
-def max_depth(t):
+def get_height(t):
     if t is None:
         return 0
-        
-    l_lv = max_depth(t.left)
-    r_lv = max_depth(t.right)
-    
+    l_lv = get_height(t.left)
+    r_lv = get_height(t.right)
     return max(l_lv, r_lv)+1
 
-'''get level of given node of the tree'''
-def get_level(t,x,lv = 0):
+'''Nodes: get level of given node of the tree; level = depth + 1'''
+def get_level(t,x,level = 1):
     if t is None:
         return 0 #either tree is empty or node was never found
-        
-    l = t.left
-    rt = t.root
-    r = t.right
-        
-    if rt == x:
-        return lv
-    
-    l_lv = get_level(l,x,lv+1)
-    r_lv = 0
-    if l_lv == 0:
-        r_lv = get_level(r,x,lv+1)
-        return r_lv
-    else:
+    if t.root == x:
+        return level
+    l_lv = get_level(t.left,x,level+1)
+    if l_lv != 0:
         return l_lv
+    r_lv = get_level(t.right,x,level+1)
+    return r_lv
+
+'''Edges: get depth of given node of the tree'''
+def get_depth(t,x,depth=0):
+    if t is None:
+        return 0 #either tree is empty or node was never found
+    if t.root == x:
+        return depth
+    l_dth = get_depth(t.left,x,depth+1)
+    if l_dth != 0:
+        return l_dth
+    r_dth = get_depth(t.right,x,depth+1)
+    return r_dth
+    
 
 '''Find the distance between two nodes
-ex: 5->8 is 3
+ex: 5->8 is 3; count the edges in distance
 plan is to get LCA of the two nodes 
-then find the distance'''
-
-def dist(t,n1,n2):
+then find the distance 
+left + right - 2 * lca can be equivalent to
+(left-lca) + (right-lca). it's alternative.'''
+def distance(t,n1,n2):
     if t is None:
         return 0
-    
-    lca = find_lca2(t,n1,n2)
-    
-    left = get_level(t,n1)
-    right = get_level(t,n2)
-    lca_dist = 2 * get_level(t,lca)
-    
-    '''left + right - 2 * lca can be equalvalent to
-    (left-lca) + (right-lca). it's alternative.'''
+    lca = get_lca(t,n1,n2)
+    left = get_depth(t,n1)
+    right = get_depth(t,n2)
+    lca_dist = 2 * get_depth(t,lca)
     return left + right - lca_dist 
     
 '''Largest Sum Path'''    
@@ -237,24 +223,30 @@ def largest_sum(t):
 def bfs(t):
     if t is None:
         return
-    
     q = []
     q.insert(0,t)
-    
     while q != []:
         t = q.pop(0)
-        
-        l = t.left
-        rt = t.root
-        r = t.right
-        
-        print rt
-        
-        if l is not None:
-            q.append(l)
-        if r is not None:
-            q.append(r)
+        print t.root
+        if t.left is not None:
+            q.append(t.left)
+        if t.right is not None:
+            q.append(t.right)
             
+'''The diameter of a tree is the number of
+nodes on the longest path 
+between any two leaves in the tree
+max(l_dm, r_dem) is the node path without the root
+l_ht + r_ht + 1 is the node path with the root'''
+def diameter(t):
+    if t is None:
+        return 0
+    l_ht = get_height(t.left)
+    r_ht = get_height(t.right)
+    l_dm = diameter(t.left)
+    r_dm = diameter(t.right)
+    return max( max( l_dm,r_dm ),l_ht+r_ht+1 )
+    
 if __name__ == "__main__":
     
     t = Tree(1,
@@ -266,14 +258,30 @@ if __name__ == "__main__":
                     Tree(5),
                     Tree(6
                         ,Tree(8))))
-                        
-    print "========BFS=========="
-    bfs(t)
-    print "====================="
-    print_t(t)
-    paths_bt(t) #print all path 
     
-    print "max depth : ",max_depth(t) #print longest path from root to leaf
+    print "======Tree Diagream======"
+    print_t(t)
+    print "========================="
+    
+    print "======All Paths======"
+    paths_bt(t) #print all path
+    print "====================="
+    
+    print "====LCA, Depth, Level, Distance, Height of Tree, Diameter===="
+    print "get only lca : ", get_lca(t,5,8)
+    print "get only depth of node : ", get_depth(t,4)
+    print "get only level of node : ", get_level(t,6)
+    print "distance from 5 to 8 : ", distance(t,5,8)
+    print "get height of the tree : ", get_height(t) #print longest path from root to leaf
+    print "diameter : ", diameter(t)
+    print "============================================================="
+    print "========BFS========"
+    bfs(t)
+    print "==================="
+    
+    '''
+    print_t(t)
+    
     
     getMax_level(t)
     shortest_path(t,4,5)
@@ -285,3 +293,4 @@ if __name__ == "__main__":
     print "diameater from 5 to 8 : ", dist(t,5,8)
     
     print "largest_sum : ",largest_sum(t)
+    '''
