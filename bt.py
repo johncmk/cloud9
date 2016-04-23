@@ -151,9 +151,18 @@ def get_lca(t,n1,n2):
     else: 
         return r_root
 
+'''Get Maximum depth from root to leaf; count the number of the edges'''
+def max_depth(t):
+    if t is None:
+        return -1
+    l_dth = max_depth(t.left)
+    r_dth = max_depth(t.right)
+    return max(l_dth,r_dth)+1
+
 '''Longest path aka height of the tree
 the given tree will return 4 because
->[1->2->4->7] or [1->3->6->8]'''
+>[1->2->4->7] or [1->3->6->8]
+count the nunber of the nodes'''
 def get_height(t):
     if t is None:
         return 0
@@ -278,6 +287,8 @@ if __name__ == "__main__":
     print "========BFS========"
     bfs(t)
     print "==================="
+    print "==================="
+    print "max depth : ", max_depth(t)
     
     '''
     print_t(t)
