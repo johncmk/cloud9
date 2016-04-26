@@ -1,12 +1,17 @@
+'''Factorial function means to multiply 
+a series of descending natural number 3! = 3 x 2 x 1  
+Note: it is generally agreed that 0! = 1. 
+It may seem funny that the multiplying no numbers 
+together gets us 1, but it helps simplify a lot 
+of equation.'''
+
 '''non-tail recursion; 
 waste more memory when n is big integer
 such as 1,000,000.'''
 
 def fact(n):
-    if n == 0:
+    if n <= 1:
         return n
-    if n == 1:
-        return 1
     return n * fact(n-1)
 
 '''tail recursion; save 
@@ -14,9 +19,7 @@ more stack frame even thoug the integer
 is big such as 1,000,000'''
 
 def fact_tail(n, ret = 1):
-    if n == 0:
-        return 0
-    if n == 1:
+    if n <= 1:
         return ret
     return fact_tail(n-1,ret*n)
 
