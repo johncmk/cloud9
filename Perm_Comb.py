@@ -1,6 +1,7 @@
 '''non-tail recursion; 
 waste more memory when n is big integer
 such as 1,000,000.'''
+
 def fact(n):
     if n == 0:
         return n
@@ -11,6 +12,7 @@ def fact(n):
 '''tail recursion; save 
 more stack frame even thoug the integer
 is big such as 1,000,000'''
+
 def fact_tail(n, ret = 1):
     if n == 0:
         return 0
@@ -36,9 +38,18 @@ def comb(n,k):
     denominator = fact_tail(k)
     return numerator / denominator
     
-    
 
 if __name__ == "__main__":
     
+    '''Permutation:  
+        How many ways can we award a 1st, 2nd and 3rd place prize 
+        among 10 contestants?
+        (Gold / Silver / Bronze)'''
+    
     print "Permutation : ",perm(10,3)
+    
+    '''Combination:
+       How many ways can I give 3 tin cans to 10 people? 
+        '''
+    
     print "combination : ",comb(10,3)
