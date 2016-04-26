@@ -1,4 +1,7 @@
 #tail-recursive function
+'''Q: Why do you like functional programming so much?
+        What does it acutally get you?
+   A: tail recursion is its own reward'''
 
 '''Simple tail recursion. Since the recursion call
 at the end of the function. there is nothing left to do after
