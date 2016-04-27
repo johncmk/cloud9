@@ -50,11 +50,13 @@ def foo2(n):
         rev.append(max_val)
     return rev[n]
    
-   
+'''This is DP beause the optimal solution
+is being construted by previous optimal solutions''' 
+
 def foo3(p,n):
     
     dp = [0 for i in range(n+1)]
-    dp[0] = -10
+    dp[0] = 0
     
     for i in range(1,n+1):
         for j in range(i):
