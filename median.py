@@ -23,14 +23,13 @@ def _medians(li):
     
     for el in li:
         
-        # The beginning of the case; el can be in max_h or min_h. It's your decision.
+        #1) The beginning of the case; el can be in max_h or min_h. It's your decision.
         if max_h == [] and min_h == []:
             temp = el
             heapq.heappush(max_h,el)
-            # heapq._heapify_max(max_h)
         else:    
             
-            #insert component
+            #2)get the median from the median list component
             mid = li_m[len(li_m)-1]
             
             if el <= mid:
@@ -41,7 +40,7 @@ def _medians(li):
             heapq._heapify_max(max_h)
             heapq.heapify(min_h)
             
-            #adjust component
+            #3)adjust component
             if len(max_h) - len(min_h) > 1:
                 temp = heapq.heappop(max_h)
                 heapq.heappush(min_h,temp)
@@ -52,14 +51,16 @@ def _medians(li):
             heapq.heapify(min_h)
             heapq._heapify_max(max_h)
             
-            #determine the median component
+            #4)determine the median component
             if len(max_h) == len(min_h):
                 temp = (max_h[0] + min_h[0])/2.0
             elif len(max_h) - len(min_h) == 1:
                 temp = max_h[0]
             elif len(min_h) - len(max_h) == 1:
                 temp = min_h[0]
-                
+          
+        #5)Finally, when the decision is made that which value should be the median
+        #then added it to the median list
         li_m.append(temp)
         
     return li_m
