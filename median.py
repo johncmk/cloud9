@@ -1,20 +1,60 @@
 import heapq
 
-'''Fine median in running stream
-requirements; min_heap and max_heap'''
+'''
+Fine median in running stream
+requirements; min_heap and max_heap
+'''
 
-'''Assume that the elements in the list 
-are from the datastream'''
+'''
+Assume that the elements in the list 
+are from the datastream
+'''
 def medians(li):
     if len(li) <= 1:
         return li
     return _medians(li)
     
-'''if the list is not empty
+'''
+if the list is not empty
 the datastream will begin with the loop;
-          middle
-max_heap          min_heap'''
+          middle = [5,4]
+max_heap          min_heap
+   3                  5         
+'''
 
+#get the median in the list
+def push_median(max_h,min_h,el,mid):
+    if el <= mid:
+        heapq.heappush(max_h,el)
+    else:
+        heapq.heappush(min_h,el)
+
+#adjust the heap if one of the heap size
+#is greater than the other one by more than 1
+def adjust_heap(max_h,min_h):
+    if len(max_h) - len(min_h) > 1:
+        temp = heapq.heappop(max_h)
+        heapq.heappush(min_h,temp)
+    elif len(min_h) - len(max_h) > 1:
+        temp = heapq.heappop(min_h)
+        heapq.heappush(max_h,temp)
+            
+#get the final median from two heap tree
+def get_median(max_h,min_h):
+    if len(max_h) == len(min_h):
+        temp = (max_h[0] + min_h[0])/2.0
+    elif len(max_h) - len(min_h) == 1:
+        temp = max_h[0]
+    elif len(min_h) - len(max_h) == 1:
+        temp = min_h[0]
+    return temp
+
+#heapify the both min and max tree
+def _heapify(max_h,min_h):
+    heapq._heapify_max(max_h)
+    heapq.heapify(min_h)
+            
+#return list of medians
 def _medians(li):
     
     min_h = [] # right side
@@ -32,34 +72,18 @@ def _medians(li):
             #2)get the median from the median list component
             mid = li_m[len(li_m)-1]
             
-            if el <= mid:
-                heapq.heappush(max_h,el)
-            else:
-                heapq.heappush(min_h,el)
-        
-            heapq._heapify_max(max_h)
-            heapq.heapify(min_h)
+            #3)push the element into the heap
+            push_median(max_h,min_h,el,mid)
+            _heapify(max_h,min_h)        
             
-            #3)adjust component
-            if len(max_h) - len(min_h) > 1:
-                temp = heapq.heappop(max_h)
-                heapq.heappush(min_h,temp)
-            elif len(min_h) - len(max_h) > 1:
-                temp = heapq.heappop(min_h)
-                heapq.heappush(max_h,temp)
+            #4)adjust component
+            adjust_heap(max_h,min_h)
+            _heapify(max_h,min_h)        
             
-            heapq.heapify(min_h)
-            heapq._heapify_max(max_h)
-            
-            #4)determine the median component
-            if len(max_h) == len(min_h):
-                temp = (max_h[0] + min_h[0])/2.0
-            elif len(max_h) - len(min_h) == 1:
-                temp = max_h[0]
-            elif len(min_h) - len(max_h) == 1:
-                temp = min_h[0]
+            #5)determine the median component
+            temp = get_median(max_h,min_h)
           
-        #5)Finally, when the decision is made that which value should be the median
+        #6)Finally, when the decision is made that which value should be the median
         #then added it to the median list
         li_m.append(temp)
         
