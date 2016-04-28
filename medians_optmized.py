@@ -1,9 +1,15 @@
 import heapq
 
-def medians(li):
-    if len(li) <= 1:
-        return li
-    return _medians(li)
+
+import random
+def mid_rule(max_h,min_h,rule='a'):
+    
+    return {
+        'a': (max_h[0] + min_h[0])/2.0,
+        'b': min_h[0],
+        'c': max_h[0],
+        'd': random.choice([min_h[0],max_h[0]])
+    }.get(rule,(max_h[0] + min_h[0])/2.0)
 
 def get_median(max_h,min_h):
     
@@ -11,7 +17,7 @@ def get_median(max_h,min_h):
     heapq.heapify(min_h)
     
     if len(max_h) == len(min_h):
-        temp = (max_h[0] + min_h[0])/2.0
+        temp = mid_rule(max_h,min_h,'h')
     elif len(max_h) - len(min_h) == 1:
         temp = max_h[0]
     elif len(min_h) - len(max_h) == 1:
@@ -24,7 +30,10 @@ def get_median(max_h,min_h):
         return get_median(max_h,min_h)
     return temp
         
-def _medians(li):
+def medians(li):
+    
+    if len(li) <= 1:
+        return li
     
     min_h = [] # right side
     max_h = [] # left side
@@ -36,12 +45,16 @@ def _medians(li):
             heapq.heappush(max_h,el)
         else:    
             mid = li_m[len(li_m)-1]
+            
             if el <= mid:
                 heapq.heappush(max_h,el)
             else:
                 heapq.heappush(min_h,el)
+                
             temp = get_median(max_h,min_h)
+            
         li_m.append(temp)
+        
     return li_m
     
 if __name__ == "__main__":
@@ -53,4 +66,6 @@ if __name__ == "__main__":
     li3 = [12,7,8,11]
     # expected output >> [12,9.5,8,9.5]
 
+    print medians(li)
+    print medians(li2)
     print medians(li3)
