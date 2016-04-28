@@ -14,8 +14,8 @@ r10 = 30 from solution 10 = 10 (no cuts) [][][][][][][][][][]
 
 '''No DP because this function does not
 construct an optimal solution from computed information
-it rathert solves the problem based on the p list. Therefore,
-the max revenue won't be able to achieve the goal.'''
+it rather solves the problem based on the elements of 'p' list. Therefore,
+the max revenue won't have the optimized max value '''
 def cut_rod_test(n):
     
     if n <= 0:
