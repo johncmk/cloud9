@@ -1,9 +1,16 @@
 import heapq
 
-
+'''
+Median rule when both heap sizes are equivalent
+a) get the mean of two selected elements
+b) get always the lower one
+c) get always the higher one
+d) randomly choose between two
+default) select option 'a' from above
+'''
 import random
 def mid_rule(max_h,min_h,rule='a'):
-    
+    #python switch statement
     return {
         'a': (max_h[0] + min_h[0])/2.0,
         'b': min_h[0],
@@ -11,13 +18,14 @@ def mid_rule(max_h,min_h,rule='a'):
         'd': random.choice([min_h[0],max_h[0]])
     }.get(rule,(max_h[0] + min_h[0])/2.0)
 
+
 def get_median(max_h,min_h):
     
     heapq._heapify_max(max_h)
     heapq.heapify(min_h)
     
     if len(max_h) == len(min_h):
-        temp = mid_rule(max_h,min_h,'h')
+        temp = mid_rule(max_h,min_h)
     elif len(max_h) - len(min_h) == 1:
         temp = max_h[0]
     elif len(min_h) - len(max_h) == 1:
@@ -25,10 +33,11 @@ def get_median(max_h,min_h):
     else: #else balance the tree and recusively get temp again
         if len(max_h) - len(min_h) > 1:
             heapq.heappush(min_h,heapq.heappop(max_h))
-        elif len(min_h) - len(max_h) > 1:
+        else:
             heapq.heappush(max_h,heapq.heappop(min_h))
         return get_median(max_h,min_h)
     return temp
+        
         
 def medians(li):
     
