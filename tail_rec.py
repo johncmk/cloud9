@@ -53,8 +53,8 @@ def fact_tail(n,a):
 
 #Compiler reads right to left
 
-'''This function is to test that function calls primarily than a variable when
-they are on the same line.'''
+'''This function is to test that function call is prioritized even though when
+there are non-functions such as text or variabls on the same line in the print statement/ non print statement.'''
 
 def right_to_left(st):
     print "right to left function called"

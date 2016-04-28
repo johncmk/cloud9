@@ -14,8 +14,8 @@ def fact(n):
         return n
     return n * fact(n-1)
 
-'''tail recursion; save 
-more stack frame even though the integer
+'''tail recursion; 
+save more stack frame even though the integer
 is big such as 1,000,000'''
 
 def fact_tail(n, ret = 1):
