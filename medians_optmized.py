@@ -25,7 +25,7 @@ def get_median(max_h,min_h):
     heapq.heapify(min_h)
     
     if len(max_h) == len(min_h):
-        temp = mid_rule(max_h,min_h)
+        temp = mid_rule(max_h,min_h) # you may select any option above
     elif len(max_h) - len(min_h) == 1:
         temp = max_h[0]
     elif len(min_h) - len(max_h) == 1:

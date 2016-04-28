@@ -76,7 +76,7 @@ def _medians(li):
             push_median(max_h,min_h,el,mid)
             _heapify(max_h,min_h)        
             
-            #4)adjust component
+            #4)adjust both min and max tree to have difference of 1 
             adjust_heap(max_h,min_h)
             _heapify(max_h,min_h)        
             
@@ -92,5 +92,12 @@ def _medians(li):
 if __name__ == "__main__":
 
     li = [5,3,4,1,6]
-    print medians(li)
     # expected output >> [5,4,4,3.5,4]
+    li2 = [5,15,1,3]
+    # expected output >> [5,10,5,4]
+    li3 = [12,7,8,11]
+    # expected output >> [12,9.5,8,9.5]
+
+    print medians(li)
+    print medians(li2)
+    print medians(li3)
