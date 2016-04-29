@@ -30,7 +30,7 @@ def get_median(max_h,min_h):
         temp = max_h[0]
     elif len(min_h) - len(max_h) == 1:
         temp = min_h[0]
-    else: #else balance the tree and recusively get temp again
+    else: #else balance the tree and recursively get temp again
         if len(max_h) - len(min_h) > 1:
             heapq.heappush(min_h,heapq.heappop(max_h))
         else:
