@@ -28,6 +28,9 @@ Optimal Solution will be using the mergesort
 such that each time you merge and find the left el is greater than
 the right array then increment the inverion count'''
 
+
+
+
 if __name__ == "__main__":
     
     li = [3,1,4,2]
@@ -37,4 +40,6 @@ if __name__ == "__main__":
     li3 = [1,20,6,4,5]
     # >> 5
     print inversions_lazy(li3)
+    
+    print len(li2)/2
     
