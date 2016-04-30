@@ -28,9 +28,49 @@ Optimal Solution will be using the mergesort
 such that each time you merge and find the left el is greater than
 the right array then increment the inverion count'''
 
+# inversion = inv1 + inv2 + cross_inv
+
+def mergeSort(li,inv = 0):
+    
+    if len(li) <= 1:
+        return li,inv
+        
+    mid = len(li)/2
+    l = li[:mid]
+    r = li[mid:]
+    
+    l,inv1 = mergeSort(l,inv)
+    r,inv2 = mergeSort(r,inv)
+    
+    return merge(l,r,inv1+inv2)
+    
+    
+def merge(l,r,inv):
+    
+    l_pt = 0
+    r_pt = 0
+    m = []
+    
+    while len(m) < len(l) + len(r):
+        if l_pt == len(l):
+            m.append(r[r_pt])
+            r_pt+=1
+        elif r_pt == len(r):
+            m.append(l[l_pt])
+            l_pt+=1
+        elif l[l_pt] <= r[r_pt]:
+            m.append(l[l_pt])
+            l_pt+=1
+        else:
+            inv+=len(l)-l_pt
+            m.append(r[r_pt])
+            r_pt+=1
+            
+    return m,inv
 
 
-
+        
+    
 if __name__ == "__main__":
     
     li = [3,1,4,2]
@@ -39,7 +79,7 @@ if __name__ == "__main__":
     # >> 3
     li3 = [1,20,6,4,5]
     # >> 5
-    print inversions_lazy(li3)
     
-    print len(li2)/2
-    
+    print mergeSort(li)
+    print mergeSort(li2)
+    print mergeSort(li3)

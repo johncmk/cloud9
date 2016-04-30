@@ -5,6 +5,7 @@ def mergeSort(li):
         return
     _mergeSort(li,0,len(li)-1)
 
+
 def _mergeSort(li,low,high):
 
     if low < high:
@@ -23,6 +24,7 @@ def merge(li,low,mid,high):
     l = [0]*n1
     r = [0]*n2
     
+    # split the list into temp arrays 
     for i in range(n1):
         l[i] = li[low+i]
     for j in range(n2):
@@ -52,6 +54,9 @@ def merge(li,low,mid,high):
         li[k] = r[j]
         j+=1
         k+=1
+
+
+
 
 if __name__ == "__main__":
     
