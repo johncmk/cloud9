@@ -205,10 +205,13 @@ def datastream():
 
 
 # k-way mergesort
-def mergeSort(li):
+def mergeSort(li,k):
     if len(li) <= 1:
         return li
-    k_mid = len(li)/3
+    if len(li) < k:
+        print "Enter k that is greater than the list length."
+        return k
+    k_mid = len(li)/k
     l = li[:k_mid]
     md = li[k_mid:k_mid*2]
     r = li[k_mid*2:]
@@ -263,16 +266,14 @@ if __name__ == "__main__":
     
     #datastream()
     
-    li = [4,1,5,2,6,3,7,0]
+    # li = [4,1,5,2,6,3,7,0]
     
-    # li = shuffle_li(range(80000))
+    li = shuffle_li(range(1000000))
     
     # print qsort2(li)
     # g =  qsort2(li)
     # print len(g)
-    
-    
-    
-    print mergeSort(li)
+
+    print mergeSort(li,15)    
     # f =  mergeSort(li)
     # print len(f)
