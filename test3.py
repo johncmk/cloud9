@@ -10,6 +10,15 @@ def _enumerate(a,b):
         for el_b in b:
            li.append((el_a,el_b))
     return li
+    
+def shuffle_li(li):
+    if len(li) <= 1:
+        print "nothing to shuffle"
+
+    for i in range(len(li)-1,-1,-1):
+        ptr = random.randrange(i+1)
+        li[i],li[ptr] = li[ptr],li[i]
+    return li
 
 # nbesta; sort and take the top n; slowest
 
@@ -142,19 +151,18 @@ def _nbestc(a,b, aptr, bptr, li = []):
             bptr[0]+=1
             return _nbestc(a,b,aptr,bptr,li)
            
-    
-#k-way mergesort    
-def mergeSort(li):
-    if len(li) <= 1:
-        return li
-        
         
 # Find the k smallest number in datastream
+
+import sys
 
 def datastream():
     k = 0
     k_flag = True
     stream = True
+    
+    min_h = []
+    max_h = []
     
     while stream:
         
@@ -162,9 +170,17 @@ def datastream():
             k = int(raw_input("Please Enter integer value for k: "))
             print "You have input k = ",k
             print "To exit the datastream input 'x'."
+            print "To print k smallest from list input 'print'"
             k_flag = False
         else:
             el = raw_input("input any integer: ")
+            
+            if el == 'print':
+                if len(min_h)+len(max_h) < k:
+                    print "The total number of elements are less than k = ",k
+                    continue
+                else:
+                    break
             
             if el == 'x':
                 print "Goodbye."
@@ -172,6 +188,67 @@ def datastream():
             
             el = int(el)
         
+            if max_h == []:
+                heapq.heappush(max_h,el)
+            else:
+                heapq._heapify_max(max_h)
+                el_mx = heapq.heappop(max_h)
+            
+                if el > el_mx:
+                    heapq.heappush(min_h,el_mx)
+                    heapq.heappush(max_h,el)
+                else:
+                    heapq.heappush(min_h,el)
+            
+        heapq.heapify(min_h)
+        heapq._heapify_max(max_h)
+
+
+# k-way mergesort
+def mergeSort(li):
+    if len(li) <= 1:
+        return li
+    k_mid = len(li)/3
+    l = li[:k_mid]
+    md = li[k_mid:k_mid*2]
+    r = li[k_mid*2:]
+    heapq.heapify(l)
+    heapq.heapify(md)
+    heapq.heapify(r)
+    return merge(l,md,r)
+    
+def merge(l,md,r):
+    
+    temp = []
+    m = []
+    len_l = len(l)
+    len_md = len(md)
+    len_r = len(r)
+    
+    # these are sentinel to find which heap tree did the element popped from.
+    min_el = 0
+    d = {'l':0, 'md':0, 'r':0}
+    
+    while len(m) < len_l + len_md + len_r:
+
+        if l != [] and d['l'] == min_el:
+            l_el = heapq.heappop(l)
+            heapq.heappush(temp,l_el)
+            d['l'] = l_el
+        if md != [] and d['md'] == min_el:
+            md_el = heapq.heappop(md)
+            heapq.heappush(temp,md_el)
+            d['md'] = md_el
+        if r != [] and d['r'] == min_el:
+            r_el = heapq.heappop(r)
+            heapq.heappush(temp,r_el)
+            d['r'] = r_el
+            
+        heapq.heapify(temp)
+        min_el = heapq.heappop(temp)
+        m.append(min_el)
+  
+    return m
 
 
 if __name__ == "__main__":
@@ -181,10 +258,21 @@ if __name__ == "__main__":
     
            
     # print "nbesta : ",nbesta(a,b)
-    
     # print "nbestb : ",nbestb(a,b)
-    
     # print "nbestc : ",nbestc(a,b)
     
+    #datastream()
     
-    datastream()
+    li = [4,1,5,2,6,3,7,0]
+    
+    # li = shuffle_li(range(80000))
+    
+    # print qsort2(li)
+    # g =  qsort2(li)
+    # print len(g)
+    
+    
+    
+    print mergeSort(li)
+    # f =  mergeSort(li)
+    # print len(f)
