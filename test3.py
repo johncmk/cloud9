@@ -224,15 +224,13 @@ def merge(l,md,r):
     
     temp = []
     m = []
-    len_l = len(l)
-    len_md = len(md)
-    len_r = len(r)
+    total_len = len(l) + len(md) + len(r)
     
     # these are sentinel to find which heap tree did the element popped from.
     min_el = 0
     d = {'l':0, 'md':0, 'r':0}
     
-    while len(m) < len_l + len_md + len_r:
+    while len(m) < total_len:
 
         if l != [] and d['l'] == min_el:
             l_el = heapq.heappop(l)
@@ -268,7 +266,7 @@ if __name__ == "__main__":
     
     # li = [4,1,5,2,6,3,7,0]
     
-    li = shuffle_li(range(1000000))
+    li = shuffle_li(range(1000))
     
     # print qsort2(li)
     # g =  qsort2(li)
