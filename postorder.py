@@ -10,14 +10,14 @@ def search(in_li,root,n):
             return i
     return -1
 
-def postorder(in_li,pre_li,n=0):
+def postorder(in_li,pre_li,n):
     
     root_ads = search(in_li,pre_li[0],n)
 
-    if root_ads != 0:
+    if root_ads > 0:
         postorder(in_li, pre_li[1:],root_ads)
         
-    if root_ads != n-1:
+    if root_ads < n-1:
         postorder(in_li[root_ads+1:],pre_li[root_ads+1:],n-root_ads-1)
     
     print pre_li[0], " ",

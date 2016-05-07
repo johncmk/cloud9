@@ -133,7 +133,6 @@ def _qselect(t,k,cnt):
     cnt[0]+=1
     if cnt[0] == k:
         print "t.root : ",t.root
-        return
     _qselect(t.right,k,cnt) 
   
 # quick select in BST   
@@ -168,7 +167,7 @@ def qselect(k, t):
     
     if num + 1 == k:
         return k,rt
-    if num >= k:
+    if num == k:
         return k,x
     k = k - (num+1)    
     num2,y = qselect(k,r)
@@ -206,6 +205,9 @@ def qselect_unsorted(li,x,k):
         return qselect_unsorted(l+eq,x,k)
     k = k - (len(l) + len(eq) - 1)
     return qselect_unsorted(r,x,k)
+  
+  
+  
         
 if __name__ == "__main__":
     
@@ -276,8 +278,10 @@ if __name__ == "__main__":
     
     print "sorted : ", _sorted(bst,[])
     
-    # print "kth node : ",qselect_bst(bst,4)
+    qselect_bst(bst,4)
     
     print "kth node advanced : ", qselect(4,bst)
+    
+    
     
     
