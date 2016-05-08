@@ -9,19 +9,20 @@ timer; global variable that tracks the node timer
 
 dfs_timer = 0
 
-def init_dfs(g,c,t):
+def init_dfs(g,c,d_t,f_t):
     
     for el in g:
         c[el] = 'w' 
-        t[el] = 0
+        d_t[el] = 0
+        f_t[el] = 0
 
-def dfs(u,g,c,t):
+def dfs(u,g,c,d_t,f_t):
     
     global dfs_timer
     
     c[u] = "g"
-    t[u] = dfs_timer
     dfs_timer+=1
+    d_t[u] = dfs_timer
     
     if u not in g:
         c[u] = "b"
@@ -30,14 +31,16 @@ def dfs(u,g,c,t):
     for v in g[u]:
         if c[v] == "w":
             print u," -> ",v
-            dfs(v,g,c,t)
+            dfs(v,g,c,d_t,f_t)
         elif c[v] == "g":
             print u," -> ",v,"[BACK]"
-        elif t[v] > t[u]:
+        elif d_t[v] > d_t[u]:
             print u," -> ",v,"[FORWARD]"
         else:
             print u," -> ",v,"[CROSS]"
-
+    
+    dfs_timer+=1
+    f_t[u] = dfs_timer
     c[u] = "b"
     return
 
@@ -127,10 +130,54 @@ def print_cycle(pi,u,v):
 Topological Sort using DFS and BFS
 '''
    
+topo_timer = 0
+   
 # set the number of indegree egdes of each node    
-# def init_topo_dfs(g,)
+def init_topo_dfs(g,c,d_t,f_t,in_degree):
+    
+    for el in g:
+        in_degree[el] = 0
+        c[el] = 'w'
+        d_t[el] = 0
+        f_t[el] = 0
+        
+    for u in g:
+        for v in g[u]:
+            in_degree[v] += 1
+
+def topo_dfs(u,g,c,d_t,f_t,in_degree,stk):
+    
+    c[u] = 'g'
+    global topo_timer
+    topo_timer+=1
+    d_t[u] = topo_timer
+    
+    if u not in g:
+        c[u] = 'b'
+        d_t[u] = -1
+        f_t[u] = -1
+        in_degree[u] = -1
+    
+    for v in g[u]:
+        in_degree[v]-=1
+        if c[v] == 'w' and in_degree[u] == 0:
+            topo_dfs(v,g,c,d_t,f_t,in_degree,stk)
+        elif c[v] == 'g':
+            print "Cycle has detected, No Topological Order"
+            return
+        
+    
+    stk.insert(0,u)
+    c[u] = 'b'
+    topo_timer+=1
+    f_t[u] = topo_timer
+    return
 
 if __name__ == "__main__":
+    
+    '''
+    Shared variables
+    '''
     
     #graphs 
     
@@ -145,9 +192,9 @@ if __name__ == "__main__":
     g_topo = {
                 "CS10": ["CS20", "CS11"],
                 "CS11": ["CS21"],
+                "CS12": ["CS30"], 
                 "CS20": ["CS30"],
                 "CS21": ["CS20", "CS12"],
-                "CS12": ["CS30"],
                 "CS30": []
                 }
     
@@ -155,22 +202,18 @@ if __name__ == "__main__":
     c = {}
     
     #time
-    t = {}
-    
+    d_t = {} # discover time
+    f_t = {} # finish time
     
     '''DFS'''
     print "====DFS===="
     
-    
-    init_dfs(g,c,t)
-    
-    dfs("A",g,c,t)
-    
+    init_dfs(g,c,d_t,f_t)
+    dfs("A",g,c,d_t,f_t)
     
     '''BFS'''
     
     print "\n====BFS===="
-    
     
     #level
     lv = {}
@@ -178,18 +221,34 @@ if __name__ == "__main__":
     init_bfs(g,lv)
     bfs("A",g,lv)
     
-    
     '''Detect cycle in graph'''
     
     print "\n====DECTECT CYCLE===="
     
-    init_cycle_dfs(g,c)
-    
-    is_cycle = [False] # element in the list varies over function calls because it passing by copy address
+    is_cycle = [False] # element in the list varies over function calls because it's passing by copy address
     pi = {} #parent is required for backtracking to parent node when print the cycle path
+    init_cycle_dfs(g,c)
     cycle_dfs("A",g,c,pi,is_cycle)
     
     if is_cycle[0] == False:
         print "ACYCLIC"
         
-        
+    '''Topological Sort'''
+    
+    print "\n====Topological Sort===="
+    
+    in_degree = {}
+    stk = []
+    
+    init_topo_dfs(g_topo,c,d_t,f_t,in_degree)
+    topo_dfs("CS10",g_topo,c,d_t,f_t,in_degree,stk)
+    
+    print "discover time : ",d_t
+    print "\nfinish time : ",f_t
+    
+    
+    while stk != []:
+        if len(stk) == 1:
+            print stk.pop(0)
+        else:
+            print stk.pop(0), " -> ",
