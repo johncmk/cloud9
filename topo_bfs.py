@@ -2,36 +2,40 @@
 
 
 '''Set level and in_degree'''
-def init_bfs(graph, level, in_degree, q):
+def init_bfs(graph, level, in_degree):
 
+    #set level and in_degree
     for u in graph:
         level[u] = -1
         in_degree[u] = 0
 
+    #Give value to each in_degree
     for u in graph:
         for v in graph[u]:
             in_degree[v]+=1
 
-    for el in graph:
-        if in_degree[el] == 0:
-            q.append(el)
-
 '''Topological Sort in BFS'''
 
-def bfs(graph, level, q, path = []):
+def bfs(u,graph, level, in_degree):
+    
+    level[u] = 0
+    path = [u]
+    q = [u]
+    
     while q != []:
         u = q.pop(0)
         for v in graph[u]:
             in_degree[v]-=1
 
-            if level[v] < level[u] and in_degree[v] == 0:
-                print "Back"
-            
-            elif level[v] == -1 and in_degree[v] == 0:
+            if level[v] == -1 and in_degree[v] == 0:
                 level[v] = level[u] + 1
                 q.append(v)
                 path.append(v)
-    return path
+                
+            # elif level[u] > level[v]:
+            #     print u,"->",v,"Back"
+    
+    print path
                 
 
 
@@ -48,12 +52,6 @@ if __name__ == "__main__":
 
     level = {}
     in_degree = {}
-    q = []
 
-    init_bfs(graph, level, in_degree, q)
-    path = bfs(graph, level, q)
-
-    print path
-
-
-
+    init_bfs(graph, level, in_degree)
+    bfs("CS10",graph, level,in_degree)
