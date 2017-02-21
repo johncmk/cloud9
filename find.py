@@ -1,4 +1,4 @@
-class Tree:
+class Tree(object):
     
     __slots__ = "root,left,right".split()
     
